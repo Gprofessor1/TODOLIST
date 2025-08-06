@@ -133,6 +133,18 @@ header h1 {
     box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6), 0 0 30px rgba(255, 107, 53, 0.3);
 }
 
+#exportTodos {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: #000000;
+    font-weight: bold;
+    font-family: 'Single Day', cursive;
+}
+
+#exportTodos:hover {
+    background: linear-gradient(135deg, #00cec9, #00b894);
+    box-shadow: 0 6px 20px rgba(0, 184, 148, 0.6), 0 0 30px rgba(0, 184, 148, 0.3);
+}
+
 /* 뷰 컨테이너 */
 .view-container {
     background: #1a1a1a;

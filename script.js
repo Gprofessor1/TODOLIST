@@ -15,6 +15,7 @@ class TodoApp {
         this.todoInput = document.getElementById('todoInput');
         this.todoDate = document.getElementById('todoDate');
         this.addTodoBtn = document.getElementById('addTodo');
+        this.exportTodosBtn = document.getElementById('exportTodos');
         
         // 뷰 요소들
         this.listView = document.getElementById('listView');
@@ -40,6 +41,9 @@ class TodoApp {
         this.todoInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.addTodo();
         });
+
+        // 내보내기
+        this.exportTodosBtn.addEventListener('click', () => this.exportTodos());
 
         // 뷰 전환
         this.toggleBtns.forEach(btn => {
@@ -236,6 +240,78 @@ class TodoApp {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    exportTodos() {
+        if (this.todos.length === 0) {
+            alert('내보낼 할일이 없습니다!');
+            return;
+        }
+
+        // 날짜별로 정렬
+        const sortedTodos = [...this.todos].sort((a, b) => {
+            if (a.date === b.date) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            }
+            return a.date.localeCompare(b.date);
+        });
+
+        // 텍스트 파일 내용 생성
+        let content = '📝 투두리스트 내보내기\n';
+        content += '='.repeat(50) + '\n\n';
+        content += `내보내기 날짜: ${new Date().toLocaleDateString('ko-KR')}\n`;
+        content += `총 할일 개수: ${this.todos.length}개\n\n`;
+
+        // 날짜별로 그룹화
+        const groupedTodos = {};
+        sortedTodos.forEach(todo => {
+            if (!groupedTodos[todo.date]) {
+                groupedTodos[todo.date] = [];
+            }
+            groupedTodos[todo.date].push(todo);
+        });
+
+        // 각 날짜별로 할일 목록 작성
+        Object.keys(groupedTodos).sort().forEach(date => {
+            const todos = groupedTodos[date];
+            const displayDate = this.formatDisplayDate(date);
+            
+            content += `📅 ${displayDate} (${date})\n`;
+            content += '-'.repeat(30) + '\n';
+            
+            todos.forEach((todo, index) => {
+                const status = todo.completed ? '✅ 완료' : '⏳ 대기';
+                content += `${index + 1}. ${todo.text} [${status}]\n`;
+            });
+            
+            content += '\n';
+        });
+
+        // 완료/미완료 통계
+        const completedCount = this.todos.filter(todo => todo.completed).length;
+        const pendingCount = this.todos.length - completedCount;
+        
+        content += '📊 통계\n';
+        content += '-'.repeat(30) + '\n';
+        content += `✅ 완료: ${completedCount}개\n`;
+        content += `⏳ 대기: ${pendingCount}개\n`;
+        content += `📈 완료율: ${Math.round((completedCount / this.todos.length) * 100)}%\n\n`;
+        
+        content += '='.repeat(50) + '\n';
+        content += '✨ 투두리스트 앱에서 생성되었습니다!';
+
+        // 파일 다운로드
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `투두리스트_${new Date().toISOString().split('T')[0]}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        alert('투두리스트가 성공적으로 내보내졌습니다! 📄');
     }
 }
 
