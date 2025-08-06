@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투두리스트</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>투두리스트</h1>
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="list">리스트</button>
+                <button class="toggle-btn" data-view="calendar">달력</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- 투두 입력 폼 -->
+            <div class="todo-form">
+                <input type="text" id="todoInput" placeholder="할 일을 입력하세요..." maxlength="50">
+                <input type="date" id="todoDate">
+                <button id="addTodo">추가</button>
+            </div>
+
+            <!-- 리스트 뷰 -->
+            <div class="view-container" id="listView">
+                <div class="todo-list" id="todoList">
+                    <!-- 투두 아이템들이 여기에 동적으로 추가됩니다 -->
+                </div>
+            </div>
+
+            <!-- 달력 뷰 -->
+            <div class="view-container hidden" id="calendarView">
+                <div class="calendar-header">
+                    <button id="prevMonth">&lt;</button>
+                    <h2 id="currentMonth">2024년 1월</h2>
+                    <button id="nextMonth">&gt;</button>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-weekdays">
+                        <div>일</div>
+                        <div>월</div>
+                        <div>화</div>
+                        <div>수</div>
+                        <div>목</div>
+                        <div>금</div>
+                        <div>토</div>
+                    </div>
+                    <div class="calendar-days" id="calendarDays">
+                        <!-- 달력 날짜들이 여기에 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
